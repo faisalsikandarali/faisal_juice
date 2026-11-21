@@ -3,6 +3,7 @@
 # 🧃 FAISAL JUICE
 ### Ultra-Modern 3D Animated Cold-Pressed Beverage Experience
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-faisaljuice.netlify.app-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://faisaljuice.netlify.app/)
 [![React](https://img.shields.io/badge/React-18.x-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![GSAP](https://img.shields.io/badge/GSAP-3.12-88CE02?style=for-the-badge&logo=greensock&logoColor=white)](https://greensock.com/gsap/)
@@ -11,11 +12,18 @@
 
 **Crafted with passion by [Faisal Sikandar](https://github.com/faisalsikandarali) • Ali Bootcamp**
 
-[🚀 Explore Repository](https://github.com/faisalsikandarali/faisal_juice) • [🤝 Collaborate on GitHub](https://github.com/faisalsikandarali/faisal_juice) • [🐞 Report Issue](https://github.com/faisalsikandarali/faisal_juice/issues)
+### 🌐 [Click Here to Experience Live Demo: faisaljuice.netlify.app](https://faisaljuice.netlify.app/)
+
+[🌐 Live Website](https://faisaljuice.netlify.app/) • [🚀 Explore Repository](https://github.com/faisalsikandarali/faisal_juice) • [🤝 Collaborate on GitHub](https://github.com/faisalsikandarali/faisal_juice) • [🐞 Report Issue](https://github.com/faisalsikandarali/faisal_juice/issues)
 
 ---
 
 </div>
+
+> 🚀 **Live Deployment URL:**  
+> Visit the live production site anytime at: **[https://faisaljuice.netlify.app/](https://faisaljuice.netlify.app/)**
+
+---
 
 ## 📖 Overview
 

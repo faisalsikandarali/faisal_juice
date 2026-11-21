@@ -2,6 +2,7 @@
   "name": "faisal-juice-website",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://faisaljuice.netlify.app/",
   "type": "module",
   "scripts": {
     "dev": "vite",
