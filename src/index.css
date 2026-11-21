@@ -34,6 +34,13 @@ body {
   overflow-x: hidden;
 }
 
+/* Custom Modern Cursor for Desktop Devices (Replaces default system cursor on website) */
+@media (hover: hover) and (pointer: fine) {
+  html, body, a, button, [role="button"], input, select, textarea, label {
+    cursor: none !important;
+  }
+}
+
 ul {
   list-style: none;
 }

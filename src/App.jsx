@@ -28,6 +28,7 @@ import labels from "./assets/labels.png";
 import ahmedImg from "./assets/people/ahmed.jpg";
 import saraImg from "./assets/people/sara.jpg";
 import AiMouseWriterTrail from "./components/AiMouseWriterTrail";
+import ModernCursor from "./components/ModernCursor";
 import { TypewriterText, SlideUpWords, SlideIn } from "./components/AnimatedText";
 import BenefitsTruckShowcase from "./components/BenefitsTruckShowcase";
 import { gsap } from "gsap";
@@ -574,6 +575,9 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fafafa] text-neutral-900 selection:bg-black selection:text-white relative">
+      {/* 🎯 Modern Custom Pointer & Glowing Magnetic Halo */}
+      <ModernCursor />
+
       {/* 🖊️ AI Kinetic Mouse Writing Trail across website */}
       <AiMouseWriterTrail />
 
