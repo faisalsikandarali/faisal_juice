@@ -26,7 +26,7 @@ import labels from "./assets/labels.png";
 import ahmedImg from "./assets/people/ahmed.jpg";
 import saraImg from "./assets/people/sara.jpg";
 import { TypewriterText, SlideUpWords, SlideIn } from "./components/AnimatedText";
-import BenefitsTruckShowcase from "./components/BenefitsTruckShowcase";
+import CraftPurityShowcase from "./components/CraftPurityShowcase";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -2022,8 +2022,8 @@ function App() {
               </SlideIn>
             </div>
 
-            {/* 3D Delivery Truck & Box Packing Showcase with 4 Responsive Pillars */}
-            <BenefitsTruckShowcase isVisible={isBenefitsVisible} />
+            {/* Interactive 3D Cold Extraction Showcase with 4 Responsive Health Pillars */}
+            <CraftPurityShowcase isVisible={isBenefitsVisible} />
           </div>
         </section>
 
@@ -2443,7 +2443,68 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer id="contact" className="bg-[#111317] text-white pt-12 sm:pt-16 pb-8 border-t border-white/10">
+      <footer id="contact" className="bg-[#111317] text-white pt-0 pb-8 border-t border-white/10 relative overflow-hidden">
+        {/* Kinetic Animated Marquee Ticker */}
+        <div className="border-b border-white/10 bg-black/40 py-3 overflow-hidden select-none">
+          <div className="animate-marquee-left flex items-center gap-8 whitespace-nowrap text-xs font-mono font-bold tracking-widest text-emerald-400 uppercase">
+            <span>⚡ 100% ORCHARD RAW</span>
+            <span className="text-white/40">★</span>
+            <span>0G ADDED SUGAR</span>
+            <span className="text-white/40">★</span>
+            <span>COLD PRESSED BELOW 4°C</span>
+            <span className="text-white/40">★</span>
+            <span>INFINITE RECYCLABLE ALUMINUM</span>
+            <span className="text-white/40">★</span>
+            <span>FAISAL JUICE COLD-CHAIN DISPATCH</span>
+            <span className="text-white/40">★</span>
+            <span>ZERO BOILING ZERO CHEMICALS</span>
+            <span className="text-white/40">★</span>
+            <span>⚡ 100% ORCHARD RAW</span>
+            <span className="text-white/40">★</span>
+            <span>0G ADDED SUGAR</span>
+            <span className="text-white/40">★</span>
+            <span>COLD PRESSED BELOW 4°C</span>
+            <span className="text-white/40">★</span>
+            <span>INFINITE RECYCLABLE ALUMINUM</span>
+            <span className="text-white/40">★</span>
+            <span>FAISAL JUICE COLD-CHAIN DISPATCH</span>
+            <span className="text-white/40">★</span>
+            <span>ZERO BOILING ZERO CHEMICALS</span>
+            <span className="text-white/40">★</span>
+          </div>
+        </div>
+
+        {/* Live Chilled Cold Chain Fleet Status Radar */}
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-12 pt-6 pb-6">
+          <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-md">
+            <div className="flex items-center gap-3">
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+              </span>
+              <div>
+                <span className="text-[10px] font-mono uppercase tracking-wider text-neutral-400 block">
+                  Cold-Chain Status Radar
+                </span>
+                <span className="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
+                  Live Dispatch Facility Operational
+                  <span className="text-emerald-400 text-xs font-mono">• Sub-Zero 4°C Active</span>
+                </span>
+              </div>
+            </div>
+            <div className="flex items-center gap-4 text-xs font-mono text-neutral-400">
+              <div className="flex items-center gap-1.5 bg-black/40 px-3 py-1.5 rounded-xl border border-white/5">
+                <span className="text-emerald-400">⚡</span>
+                <span>Fleet Temp: <strong className="text-white">-4.2°C</strong></span>
+              </div>
+              <div className="hidden sm:flex items-center gap-1.5 bg-black/40 px-3 py-1.5 rounded-xl border border-white/5">
+                <span className="text-emerald-400">📦</span>
+                <span>Live Orders: <strong className="text-white">Active Dispatch</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="max-w-[1400px] mx-auto px-4 sm:px-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 pb-10 sm:pb-12 border-b border-white/10">
             {/* Brand column */}

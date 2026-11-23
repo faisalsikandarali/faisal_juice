@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 // ⌨️ TYPEWRITER COMPONENT — Types phrases live character-by-character with blinking cursor
 export function TypewriterText({
