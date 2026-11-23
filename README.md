@@ -40,31 +40,26 @@ From a high-pressure 3D can pop loader with geyser juice explosions to an automa
 - **Dynamic Can Spin**: Smooth 360° rotational showcase during preloader initialization.
 - **High-Pressure Red Juice Blast**: Sudden pressure recoil with animated red fruit geyser streams, splash puddles, and 26 physics-driven flying droplets dispersing across the viewport.
 
-### ✍️ 2. AI Kinetic Mouse Writing Trail (Cursor Particle Ink)
-- Full-screen interactive `<canvas>` overlay tracking cursor velocity and trajectory.
-- Emits fluid glowing neon ribbon waves and floating AI typography particles (`F`, `A`, `I`, `S`, `A`, `L`, `J`, `U`, `I`, `C`, `E`, `✨`, `🌱`, `💧`).
-- Includes a dedicated floating **"AI Ink ON/OFF"** toggle switch in the bottom-left corner.
-
-### 🚚 3. 3D Fulfillment & Chilled Express Delivery Simulator
+### 🚚 2. 3D Fulfillment & Chilled Express Delivery Simulator
 - **Cans Box Packing**: Wild Pear, Crisp Apple, and Exotic Passion 3D cans drop with physical bounce into a textured Kraft cardboard shipping box.
 - **Flap Folding & Security Tape**: Flaps fold closed while official golden security tape (`🔒 FAISAL JUICE SEALED`) rolls across the seam.
 - **Priority Shipping Label Stamp**: Dynamic slam animation with recipient details (`TO: Faisal Sikandar • Ali Bootcamp • #FJ-8891`).
 - **3D Refrigerated Truck Docking & Dispatch**: A custom-styled refrigerated truck arrives from the far left of the website, docks in center, loads the sealed box into the cargo bay, puffs authentic silencer exhaust smoke clouds, shines high-beam LED headlights, and accelerates off across the asphalt highway to the far right.
 - **Interactive Step Navigation**: Allows users to step through or replay `Pack Cans`, `Seal Box`, `Truck Arrive`, `Load Bay`, and `Dispatch`.
 
-### 🧃 4. GSAP ScrollTrigger 3D Can Docking
+### 🧃 3. GSAP ScrollTrigger 3D Can Docking
 - As the user scrolls from the Hero section down to the **Orchard Fresh** section, the central 3D can smoothly animates along a curved path and locks directly into the docked stage ring.
 - Synchronized with active flavor themes (Wild Pear, Crisp Apple, Exotic Passion).
 
-### 📱 5. Zero-Clutter All-in-One Mobile Responsive Architecture
+### 📱 4. Zero-Clutter All-in-One Mobile Responsive Architecture
 - **Orchard Purity Standards (4-in-1 Compact Card)**: Instead of four tall vertical cards cluttering phone screens, all 4 purity guarantees (*Pure Extraction*, *0g Added Sugar*, *100% Raw*, *Cold-Chain Chilled*) are consolidated into a neat 2x2 grid inside a single luxury card.
 - **Social Proof Review Carousel (All-in-One Mobile Card)**: Editorial human reviews (*Ahmed R.* and *Sara K.*) plus the three credibility metrics (*12,400+ Sippers*, *4.9★ Rating*, *98% Recommend*) are housed in a single card with smooth tab switching and gentle 6-second auto-rotation.
 
-### 🛒 6. Interactive Fly-to-Cart Physics
+### 🛒 5. Interactive Fly-to-Cart Physics
 - Clicking any can or "Add to Cart" button initiates a parabolic lift-and-glide trajectory straight into the navbar shopping bag icon with realistic bounce and cart counter badges.
 - Full interactive Cart Drawer with item increment/decrement, live totals, and animated fulfillment checkout flow.
 
-### 🔤 7. Kinetic Typography & Micro-Animations
+### 🔤 6. Kinetic Typography & Micro-Animations
 - **Live AI Typewriter**: Header banner cycles through brand slogans in real time with a blinking terminal caret.
 - **Spring Slide-Up Word Reveals**: Headings emerge smoothly from behind an `overflow: hidden` mask using spring physics.
 - **Directional Entrances**: Context-aware slide-ins from left and right as sections enter the viewport.
@@ -150,7 +145,6 @@ Animated-juice-website/
 │   │   ├── passion.png     # Tropical Passion fruit cuts
 │   │   └── people/         # Editorial customer portraits (ahmed.jpg, sara.jpg)
 │   ├── components/
-│   │   ├── AiMouseWriterTrail.jsx     # Canvas particle & ribbon cursor stylus
 │   │   ├── AnimatedText.jsx           # TypewriterText, SlideUpWords, SlideIn
 │   │   └── BenefitsTruckShowcase.jsx  # 3D Kraft Box packing & delivery truck stage
 │   ├── App.jsx             # Master application containing all interactive stages

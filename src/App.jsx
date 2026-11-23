@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { BiMenu } from "react-icons/bi";
 import {
   BsCart,
@@ -6,8 +6,6 @@ import {
   BsHeart,
   BsHeartFill,
   BsShieldCheck,
-  BsTruck,
-  BsLightningCharge,
   BsTrash,
   BsPlus,
   BsDash,
@@ -27,8 +25,6 @@ import can from "./assets/can.png";
 import labels from "./assets/labels.png";
 import ahmedImg from "./assets/people/ahmed.jpg";
 import saraImg from "./assets/people/sara.jpg";
-import AiMouseWriterTrail from "./components/AiMouseWriterTrail";
-import ModernCursor from "./components/ModernCursor";
 import { TypewriterText, SlideUpWords, SlideIn } from "./components/AnimatedText";
 import BenefitsTruckShowcase from "./components/BenefitsTruckShowcase";
 import { gsap } from "gsap";
@@ -38,7 +34,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 function App() {
   const [backgroundPosition, setBackgroundPosition] = useState("0% center");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [cartItems, setCartItems] = useState([]);
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
@@ -57,7 +52,6 @@ function App() {
   const [activeCut, setActiveCut] = useState(true);
   const [isOrchardVisible, setIsOrchardVisible] = useState(false);
   const [isBenefitsVisible, setIsBenefitsVisible] = useState(false);
-  const [isTruckDispatched, setIsTruckDispatched] = useState(false);
   const [isSocialVisible, setIsSocialVisible] = useState(false);
   const [mobileReviewIndex, setMobileReviewIndex] = useState(0); // 0: Ahmed, 1: Sara
 
@@ -379,11 +373,10 @@ function App() {
 
   const handleOpen = () => {
     timeline.current?.play();
-    setSidebarOpen(true);
   };
 
   const handleClose = () => {
-    timeline.current?.reverse().then(() => setSidebarOpen(false));
+    timeline.current?.reverse();
   };
 
   const homeHeight = () => {
@@ -402,54 +395,6 @@ function App() {
     const newPosition =
       index === 0 ? "0% center" : index === 1 ? "50% center" : "100% center";
     setBackgroundPosition(newPosition);
-  };
-
-  const dispatchTruck = () => {
-    setIsTruckDispatched(true);
-    setTimeout(() => {
-      setIsTruckDispatched(false);
-    }, 2200);
-  };
-
-  const handleScroll = () => {
-    const scrolled = window.scrollY >= 50;
-    setIsHeaderScrolled(scrolled);
-
-    // Scroll trigger for orchard fresh section
-    const orchardEl = document.getElementById("orchard-fresh");
-    if (orchardEl) {
-      const oRect = orchardEl.getBoundingClientRect();
-      if (oRect.top <= window.innerHeight * 0.85) {
-        setIsOrchardVisible(true);
-      }
-    }
-
-    // Scroll trigger for can & fruit cut section
-    const shopEl = document.getElementById("shop");
-    if (shopEl) {
-      const rect = shopEl.getBoundingClientRect();
-      if (rect.top <= window.innerHeight * 0.8) {
-        setIsSectionVisible(true);
-      }
-    }
-
-    // Scroll trigger for benefits section
-    const benefitsEl = document.getElementById("benefits");
-    if (benefitsEl) {
-      const bRect = benefitsEl.getBoundingClientRect();
-      if (bRect.top <= window.innerHeight * 0.85) {
-        setIsBenefitsVisible(true);
-      }
-    }
-
-    // Scroll trigger for social proof section
-    const socialEl = document.getElementById("social-proof");
-    if (socialEl) {
-      const sRect = socialEl.getBoundingClientRect();
-      if (sRect.top <= window.innerHeight * 0.88) {
-        setIsSocialVisible(true);
-      }
-    }
   };
 
   // 🧃 GSAP ScrollTrigger Can Docking Animation (Hero Center -> Orchard Fresh Dock)
@@ -557,30 +502,53 @@ function App() {
     };
   }, []);
 
+  // High-performance visibility observer (zero layout thrashing, 60-120 FPS scrolling)
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("scroll", handleScroll);
-      homeHeight();
+    const handleScrollHeader = () => {
+      setIsHeaderScrolled(window.scrollY >= 50);
+    };
+    window.addEventListener("scroll", handleScrollHeader, { passive: true });
 
-      window.addEventListener("resize", homeHeight);
-      window.addEventListener("load", homeHeight);
+    let observer = null;
+    if (typeof window !== "undefined" && "IntersectionObserver" in window) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const id = entry.target.id;
+              if (id === "orchard-fresh") setIsOrchardVisible(true);
+              else if (id === "shop") setIsSectionVisible(true);
+              else if (id === "benefits") setIsBenefitsVisible(true);
+              else if (id === "social-proof") setIsSocialVisible(true);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
 
-      return () => {
-        window.removeEventListener("scroll", handleScroll);
-        window.removeEventListener("resize", homeHeight);
-        window.removeEventListener("load", homeHeight);
-      };
+      ["orchard-fresh", "shop", "benefits", "social-proof"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+    } else {
+      setIsOrchardVisible(true);
+      setIsSectionVisible(true);
+      setIsBenefitsVisible(true);
+      setIsSocialVisible(true);
     }
+
+    homeHeight();
+    window.addEventListener("resize", homeHeight, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScrollHeader);
+      window.removeEventListener("resize", homeHeight);
+      if (observer) observer.disconnect();
+    };
   }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fafafa] text-neutral-900 selection:bg-black selection:text-white relative">
-      {/* 🎯 Modern Custom Pointer & Glowing Magnetic Halo */}
-      <ModernCursor />
-
-      {/* 🖊️ AI Kinetic Mouse Writing Trail across website */}
-      <AiMouseWriterTrail />
-
       {/* ════════════════════════════════════════════════════
           🧃 PAGE LOADER — Hero 3D Can (Rotating Label) + Sudden Red Juice Burst
           ════════════════════════════════════════════════════ */}
@@ -761,7 +729,7 @@ function App() {
                   <div className="text-5xl mb-3">🧃</div>
                   <p className="font-semibold text-neutral-700">Your cart is empty</p>
                   <p className="text-xs mt-1">
-                    Click on any can or "Add to Cart" to watch it fly right in!
+                    Click on any can or &quot;Add to Cart&quot; to watch it fly right in!
                   </p>
                 </div>
               ) : (
@@ -1505,7 +1473,7 @@ function App() {
                 <SlideIn direction="bottom" delay={380} isVisible={isOrchardVisible}>
                   <div className="mt-8 flex items-center justify-center gap-3">
                     <div className="h-px w-16 bg-gradient-to-r from-transparent to-emerald-400" />
-                    <span className="text-emerald-500 text-sm font-bold tracking-widest uppercase">Nature's Best</span>
+                    <span className="text-emerald-500 text-sm font-bold tracking-widest uppercase">Nature&apos;s Best</span>
                     <div className="h-px w-16 bg-gradient-to-l from-transparent to-emerald-400" />
                   </div>
                 </SlideIn>
@@ -1875,7 +1843,7 @@ function App() {
             </h2>
             <SlideIn direction="bottom" delay={200} isVisible={isSectionVisible}>
               <p className="text-neutral-600 text-sm sm:text-base md:text-lg mb-5 sm:mb-6">
-                Click any can or "Add to Cart" button below — watch the can lift up in the air and fly straight into the navbar cart icon!
+                Click any can or &quot;Add to Cart&quot; button below — watch the can lift up in the air and fly straight into the navbar cart icon!
               </p>
             </SlideIn>
 
@@ -2110,7 +2078,7 @@ function App() {
                   <div className="relative mb-6">
                     <span className="text-4xl sm:text-5xl text-emerald-200/80 font-serif absolute -top-5 -left-2 select-none pointer-events-none">“</span>
                     <p className="relative z-10 text-neutral-700 text-base sm:text-lg font-medium leading-relaxed pl-4 border-l-2 border-emerald-400">
-                      "Yaar, is se better koi juice nahi! Wild Pear Sparkle pehli sip mein hi dil jeet leti hai. Ek baar try karo, hum kasam khate hain — <strong className="text-emerald-700 font-extrabold">addict ho jao ge!</strong>"
+                      &ldquo;Yaar, is se better koi juice nahi! Wild Pear Sparkle pehli sip mein hi dil jeet leti hai. Ek baar try karo, hum kasam khate hain — <strong className="text-emerald-700 font-extrabold">addict ho jao ge!</strong>&rdquo;
                     </p>
                   </div>
                 </div>
@@ -2185,7 +2153,7 @@ function App() {
                   <div className="relative mb-6">
                     <span className="text-4xl sm:text-5xl text-red-200/80 font-serif absolute -top-5 -left-2 select-none pointer-events-none">“</span>
                     <p className="relative z-10 text-neutral-700 text-base sm:text-lg font-medium leading-relaxed pl-4 border-l-2 border-red-400">
-                      "Zindagi mein pehli baar koi juice aisa mila jo genuinely tasty hai bina sugar ke. Crimson Apple Burst mera daily must-have hai — <strong className="text-red-600 font-extrabold">bilkul try karo!</strong>"
+                      &ldquo;Zindagi mein pehli baar koi juice aisa mila jo genuinely tasty hai bina sugar ke. Crimson Apple Burst mera daily must-have hai — <strong className="text-red-600 font-extrabold">bilkul try karo!</strong>&rdquo;
                     </p>
                   </div>
                 </div>
@@ -2295,7 +2263,7 @@ function App() {
 
                   {/* Quote */}
                   <p className="text-neutral-700 text-xs sm:text-sm font-medium leading-relaxed pl-3 border-l-2 border-emerald-400 mb-4">
-                    "Yaar, is se better koi juice nahi! Wild Pear Sparkle pehli sip mein hi dil jeet leti hai. Ek baar try karo, hum kasam khate hain — <strong className="text-emerald-700 font-extrabold">addict ho jao ge!</strong>"
+                    &ldquo;Yaar, is se better koi juice nahi! Wild Pear Sparkle pehli sip mein hi dil jeet leti hai. Ek baar try karo, hum kasam khate hain — <strong className="text-emerald-700 font-extrabold">addict ho jao ge!</strong>&rdquo;
                   </p>
 
                   {/* Profile & Product Tag */}
@@ -2355,7 +2323,7 @@ function App() {
 
                   {/* Quote */}
                   <p className="text-neutral-700 text-xs sm:text-sm font-medium leading-relaxed pl-3 border-l-2 border-red-400 mb-4">
-                    "Zindagi mein pehli baar koi juice aisa mila jo genuinely tasty hai bina sugar ke. Crimson Apple Burst mera daily must-have hai — <strong className="text-red-600 font-extrabold">bilkul try karo!</strong>"
+                    &ldquo;Zindagi mein pehli baar koi juice aisa mila jo genuinely tasty hai bina sugar ke. Crimson Apple Burst mera daily must-have hai — <strong className="text-red-600 font-extrabold">bilkul try karo!</strong>&rdquo;
                   </p>
 
                   {/* Profile & Product Tag */}
