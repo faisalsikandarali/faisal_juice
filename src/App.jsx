@@ -559,10 +559,10 @@ function App() {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: chamberEl,
-            start: "center center",
+            start: "top center",
             endTrigger: footerEl,
-            end: "center center",
-            scrub: 1.2,
+            end: "center 70%",
+            scrub: 1.6,
             invalidateOnRefresh: true,
           },
         });
@@ -583,13 +583,9 @@ function App() {
             const f = getCoords(footerEl);
             return f.height && c.height ? Math.min(Math.max(f.height / c.height, 0.65), 1.0) : 0.78;
           },
-          rotation: 8,
-          duration: 0.75,
-          ease: "power2.inOut",
-        }).to(canEl, {
-          rotation: 0,
-          duration: 0.25,
-          ease: "power1.out",
+          rotation: 5,
+          duration: 1,
+          ease: "none",
         });
       }, rootEl);
 
@@ -2644,25 +2640,67 @@ function App() {
                 <span className="w-3 h-3 rounded-full bg-[#8e44ad]" title="Passion Fruit"></span>
               </div>
 
-              {/* 🧃 3D CAN TARGET DOCK IN FOOTER */}
-              <div className="flex items-center gap-4">
-                <div
-                  ref={footerCanDockRef}
-                  className="relative w-24 sm:w-28 aspect-[45/83] rounded-2xl border-2 border-dashed border-emerald-500/35 bg-white/[0.02] p-2 flex flex-col items-center justify-end pb-2.5 shadow-[0_10px_30px_rgba(0,0,0,0.5)] backdrop-blur-sm group"
-                >
-                  {/* Glowing Pedestal Base */}
-                  <div className="absolute -bottom-2 inset-x-2 h-4 bg-emerald-500/25 rounded-full blur-md" />
-                  <span className="text-[8px] font-mono font-bold tracking-widest text-emerald-400/80 uppercase text-center block pointer-events-none">
-                    • 4°C Docked •
-                  </span>
+              {/* 🧃 3D CAN TARGET CRYO-DOCK IN FOOTER (Level Ka Cryogenic Docking Station) */}
+              <div className="flex flex-col sm:flex-row items-center gap-5 mt-4 p-4 sm:p-5 rounded-3xl bg-gradient-to-b from-white/[0.06] via-emerald-950/20 to-black/60 border border-emerald-500/25 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-xl relative overflow-hidden group">
+                {/* Ambient Radial Pedestal Aura */}
+                <div className="absolute -top-12 -left-12 w-48 h-48 rounded-full bg-emerald-500/15 blur-2xl pointer-events-none" />
+                <div className="absolute -bottom-10 -right-10 w-44 h-44 rounded-full bg-cyan-500/15 blur-2xl pointer-events-none" />
+
+                {/* The 3D Dock Platform */}
+                <div className="relative flex items-center justify-center">
+                  {/* Rotating Holographic Halo Ring */}
+                  <div className="absolute w-36 h-36 rounded-full border border-dashed border-emerald-400/30 animate-spin-very-slow pointer-events-none" />
+                  <div className="absolute w-28 h-28 rounded-full border border-dotted border-cyan-400/25 pointer-events-none animate-pulse" />
+
+                  {/* Target Can Dock Anchor */}
+                  <div
+                    ref={footerCanDockRef}
+                    className="relative w-28 sm:w-32 aspect-[45/83] rounded-2xl border-2 border-emerald-400/40 bg-gradient-to-b from-white/[0.04] to-black/40 flex flex-col items-center justify-end pb-3 shadow-[0_15px_35px_rgba(16,185,129,0.25)] relative z-10"
+                  >
+                    {/* Corner Reticle Brackets (Sci-Fi High Tech Accents) */}
+                    <div className="absolute top-1.5 left-1.5 w-2 h-2 border-t-2 border-l-2 border-emerald-400/80 rounded-tl-sm pointer-events-none" />
+                    <div className="absolute top-1.5 right-1.5 w-2 h-2 border-t-2 border-r-2 border-emerald-400/80 rounded-tr-sm pointer-events-none" />
+                    <div className="absolute bottom-1.5 left-1.5 w-2 h-2 border-b-2 border-l-2 border-emerald-400/80 rounded-bl-sm pointer-events-none" />
+                    <div className="absolute bottom-1.5 right-1.5 w-2 h-2 border-b-2 border-r-2 border-emerald-400/80 rounded-br-sm pointer-events-none" />
+
+                    {/* Sub-Zero Glowing Pedestal Base */}
+                    <div className="absolute -bottom-2 inset-x-2 h-5 bg-gradient-to-r from-emerald-500/40 via-cyan-400/50 to-emerald-500/40 rounded-full blur-md animate-pulse" />
+
+                    {/* Floating Bottom Label */}
+                    <span className="text-[8px] font-mono font-black tracking-widest text-emerald-300 uppercase text-center block pointer-events-none drop-shadow-sm">
+                      • 4°C CRYO-DOCK •
+                    </span>
+                  </div>
                 </div>
-                <div className="text-xs text-neutral-400 space-y-1">
-                  <span className="text-emerald-400 font-mono text-[10px] uppercase font-bold tracking-wider block">
-                    ✨ Sub-Zero Preserved
-                  </span>
-                  <p className="text-[11px] text-neutral-400 leading-snug">
-                    Docked directly from the cold extraction chamber into your eco-aluminum can.
+
+                {/* Dock Details & Specifications */}
+                <div className="flex-1 space-y-2 text-center sm:text-left z-10">
+                  <div className="flex items-center justify-center sm:justify-start gap-2">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <span className="text-emerald-400 font-mono text-[10px] uppercase font-black tracking-widest">
+                      Cryo-Sealed 4°C Chamber
+                    </span>
+                  </div>
+
+                  <h4 className="text-white font-black text-sm tracking-tight">
+                    Sub-Zero Fresh Docking
+                  </h4>
+
+                  <p className="text-[11px] text-neutral-400 leading-relaxed max-w-xs">
+                    Continuous scroll-locked cold chain preserves 98% bioactive enzymes straight from the extraction chamber into infinite aluminum.
                   </p>
+
+                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 pt-1 text-[10px] font-mono">
+                    <span className="px-2 py-0.5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-bold">
+                      ❄️ -4.0°C Active
+                    </span>
+                    <span className="px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-neutral-300 font-bold">
+                      🔒 100% Raw
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
