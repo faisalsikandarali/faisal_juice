@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { BsShieldCheck, BsLightningCharge, BsSnow, BsRecycle, BsCheck2Circle } from "react-icons/bs";
-import can from "../assets/can.png";
-import labels from "../assets/labels.png";
 import pears from "../assets/pears.png";
 import apples from "../assets/apples.png";
 import passion from "../assets/passion.png";
@@ -45,11 +43,15 @@ const FLAVORS = [
   },
 ];
 
-export default function CraftPurityShowcase({ isVisible = true }) {
-  const [activeIdx, setActiveIdx] = useState(1); // default Crisp Apple
+export default function CraftPurityShowcase({
+  isVisible = true,
+  activeIdx = 1,
+  onFlavorChange,
+  chamberCanDockRef,
+}) {
   const [sipped, setSipped] = useState(false);
 
-  const flavor = FLAVORS[activeIdx];
+  const flavor = FLAVORS[activeIdx] || FLAVORS[1];
 
   const handleSip = () => {
     setSipped(true);
@@ -91,7 +93,7 @@ export default function CraftPurityShowcase({ isVisible = true }) {
               return (
                 <button
                   key={f.id}
-                  onClick={() => setActiveIdx(i)}
+                  onClick={() => onFlavorChange && onFlavorChange(i)}
                   className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs font-bold transition-all duration-300 flex items-center gap-1.5 cursor-pointer ${
                     isSelected
                       ? "bg-white text-neutral-950 shadow-md scale-105"
@@ -203,23 +205,11 @@ export default function CraftPurityShowcase({ isVisible = true }) {
               />
             </div>
 
-            {/* The 3D Aluminum Can */}
-            <div className="relative group/can cursor-pointer z-10 transition-transform duration-500 hover:scale-105">
-              <div
-                className="w-32 xs:w-36 sm:w-44 aspect-[45/83] drop-shadow-[0_25px_45px_rgba(0,0,0,0.35)] transition-all duration-700 rounded-[6px]"
-                style={{
-                  backgroundImage: `url(${labels}), url(${can})`,
-                  maskImage: `url(${can})`,
-                  WebkitMaskImage: `url(${can})`,
-                  backgroundPosition: `${flavor.bgPosition}, center`,
-                  backgroundSize: "300% 100%, 100% 100%",
-                  backgroundRepeat: "no-repeat, no-repeat",
-                  backgroundBlendMode: "multiply",
-                  maskSize: "100% 100%",
-                  WebkitMaskSize: "100% 100%",
-                }}
-              />
-
+            {/* The Chamber Dock Anchor for 3D Traveling Can */}
+            <div
+              ref={chamberCanDockRef}
+              className="relative w-32 xs:w-36 sm:w-44 aspect-[45/83] flex items-center justify-center pointer-events-none"
+            >
               {/* Can Bottom Reflection Shadow */}
               <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-28 sm:w-36 h-4 bg-neutral-900/15 rounded-full blur-md" />
             </div>

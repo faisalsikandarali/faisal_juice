@@ -30,10 +30,19 @@ import CraftPurityShowcase from "./components/CraftPurityShowcase";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+// GSAP & Swiper
 gsap.registerPlugin(ScrollTrigger);
 
+const PURITY_FLAVORS = [
+  { id: 1, name: "Wild Pear Sparkle", bgPosition: "0% center", themeColor: "#8fcb39" },
+  { id: 2, name: "Crisp Orchard Apple", bgPosition: "50% center", themeColor: "#ff4d4d" },
+  { id: 3, name: "Exotic Passion Splash", bgPosition: "100% center", themeColor: "#8e44ad" },
+];
+
 function App() {
+  const pageRootRef = useRef(null);
   const [backgroundPosition, setBackgroundPosition] = useState("0% center");
+  const [activePurityFlavorIdx, setActivePurityFlavorIdx] = useState(1); // default Crisp Apple
   const [cartCount, setCartCount] = useState(0);
   const [cartItems, setCartItems] = useState([]);
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
@@ -90,6 +99,11 @@ function App() {
   const scrollCanRef = useRef(null);
   const canTargetDockRef = useRef(null);
   const orchardSectionRef = useRef(null);
+
+  // References for Traveling Purity Can (Chamber -> Footer Dock)
+  const chamberCanDockRef = useRef(null);
+  const footerCanDockRef = useRef(null);
+  const purityTravelCanRef = useRef(null);
 
   // References for Swipers
   const mainSwiperRef = useRef(null);
@@ -502,6 +516,102 @@ function App() {
     };
   }, []);
 
+  // 🧃 GSAP ScrollTrigger Can Docking Animation 2: Craft Chamber -> Footer Brand Dock
+  useEffect(() => {
+    const canEl = purityTravelCanRef.current;
+    const chamberEl = chamberCanDockRef.current;
+    const footerEl = footerCanDockRef.current;
+    const rootEl = pageRootRef.current;
+
+    if (!canEl || !chamberEl || !footerEl || !rootEl) return;
+
+    ScrollTrigger.config({ ignoreMobileResize: true });
+
+    const timer = setTimeout(() => {
+      const getCoords = (el) => {
+        const rRect = rootEl.getBoundingClientRect();
+        const eRect = el.getBoundingClientRect();
+        return {
+          x: eRect.left - rRect.left + eRect.width / 2,
+          y: eRect.top - rRect.top + eRect.height / 2,
+          width: eRect.width,
+          height: eRect.height,
+        };
+      };
+
+      const chamberInitial = getCoords(chamberEl);
+
+      // Set initial position of traveling can right on the chamber dock
+      gsap.set(canEl, {
+        top: chamberInitial.y,
+        left: chamberInitial.x,
+        xPercent: -50,
+        yPercent: -50,
+        x: 0,
+        y: 0,
+        rotation: 0,
+        scale: 1,
+      });
+
+      const ctx = gsap.context(() => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: chamberEl,
+            start: "center center",
+            endTrigger: footerEl,
+            end: "center center",
+            scrub: 1.2,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        tl.to(canEl, {
+          x: () => {
+            const c = getCoords(chamberEl);
+            const f = getCoords(footerEl);
+            return f.x - c.x;
+          },
+          y: () => {
+            const c = getCoords(chamberEl);
+            const f = getCoords(footerEl);
+            return f.y - c.y;
+          },
+          scale: () => {
+            const c = getCoords(chamberEl);
+            const f = getCoords(footerEl);
+            return f.height && c.height ? Math.min(Math.max(f.height / c.height, 0.65), 1.0) : 0.78;
+          },
+          rotation: 8,
+          duration: 0.75,
+          ease: "power2.inOut",
+        }).to(canEl, {
+          rotation: 0,
+          duration: 0.25,
+          ease: "power1.out",
+        });
+      }, rootEl);
+
+      ScrollTrigger.refresh();
+
+      return () => {
+        ctx.revert();
+      };
+    }, 250);
+
+    const handleRefresh = () => {
+      ScrollTrigger.refresh();
+    };
+
+    window.addEventListener("resize", handleRefresh);
+    window.addEventListener("orientationchange", handleRefresh);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", handleRefresh);
+      window.removeEventListener("orientationchange", handleRefresh);
+    };
+  }, []);
+
   // High-performance visibility observer (zero layout thrashing, 60-120 FPS scrolling)
   useEffect(() => {
     const handleScrollHeader = () => {
@@ -548,7 +658,7 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#fafafa] text-neutral-900 selection:bg-black selection:text-white relative">
+    <div ref={pageRootRef} className="min-h-screen flex flex-col bg-[#fafafa] text-neutral-900 selection:bg-black selection:text-white relative">
       {/* ════════════════════════════════════════════════════
           🧃 PAGE LOADER — Hero 3D Can (Rotating Label) + Sudden Red Juice Burst
           ════════════════════════════════════════════════════ */}
@@ -2004,8 +2114,35 @@ function App() {
             </div>
 
             {/* Interactive 3D Cold Extraction Showcase with 4 Responsive Health Pillars */}
-            <CraftPurityShowcase isVisible={isBenefitsVisible} />
+            <CraftPurityShowcase
+              isVisible={isBenefitsVisible}
+              activeIdx={activePurityFlavorIdx}
+              onFlavorChange={setActivePurityFlavorIdx}
+              chamberCanDockRef={chamberCanDockRef}
+            />
           </div>
+
+          {/* Traveling 3D Can (GSAP Scroll-Triggered from Extraction Chamber to Footer Dock) */}
+          <div
+            ref={purityTravelCanRef}
+            onClick={(e) => handleFlyToCart(products[activePurityFlavorIdx] || products[0], e)}
+            title="Click can to fly into cart!"
+            className="absolute !z-30 cursor-pointer will-change-transform drop-shadow-[0_25px_45px_rgba(0,0,0,0.35)] hover:scale-105 transition-transform"
+            style={{
+              width: "clamp(7.5rem, 5rem + 10vw, 11rem)",
+              aspectRatio: "45 / 83",
+              backgroundImage: `url(${labels}), url(${can})`,
+              maskImage: `url(${can})`,
+              WebkitMaskImage: `url(${can})`,
+              backgroundPosition: `${PURITY_FLAVORS[activePurityFlavorIdx]?.bgPosition || "50% center"}, center`,
+              backgroundSize: "300% 100%, 100% 100%",
+              backgroundRepeat: "no-repeat, no-repeat",
+              backgroundBlendMode: "multiply",
+              maskSize: "100% 100%",
+              WebkitMaskSize: "100% 100%",
+              transition: "background-position 0.6s ease",
+            }}
+          />
         </section>
 
         {/* ════════════════════════════════════════════════════
@@ -2487,24 +2624,46 @@ function App() {
         </div>
 
         <div className="max-w-[1400px] mx-auto px-4 sm:px-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 pb-10 sm:pb-12 border-b border-white/10">
-            {/* Brand column */}
-            <div className="md:col-span-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 sm:gap-10 pb-10 sm:pb-12 border-b border-white/10 items-start">
+            {/* Brand column with 3D Can Target Dock */}
+            <div className="lg:col-span-2 pr-0 lg:pr-8">
               <h2 className="text-3xl font-extrabold tracking-tight mb-3">
                 Faisal Juice<span className="text-emerald-400">.</span>
               </h2>
               <p className="text-neutral-400 text-sm leading-relaxed mb-4">
                 Redefining the beverage experience with 100% natural cold-pressed fruits, playful animations, and eco-conscious aluminum packaging.
               </p>
-              <div className="flex gap-2">
+              <div className="flex gap-2 mb-6">
                 <span className="w-3 h-3 rounded-full bg-[#8fcb39]" title="Pear"></span>
                 <span className="w-3 h-3 rounded-full bg-[#ff4d4d]" title="Apple"></span>
                 <span className="w-3 h-3 rounded-full bg-[#8e44ad]" title="Passion Fruit"></span>
               </div>
+
+              {/* 🧃 3D CAN TARGET DOCK IN FOOTER */}
+              <div className="flex items-center gap-4">
+                <div
+                  ref={footerCanDockRef}
+                  className="relative w-24 sm:w-28 aspect-[45/83] rounded-2xl border-2 border-dashed border-emerald-500/35 bg-white/[0.02] p-2 flex flex-col items-center justify-end pb-2.5 shadow-[0_10px_30px_rgba(0,0,0,0.5)] backdrop-blur-sm group"
+                >
+                  {/* Glowing Pedestal Base */}
+                  <div className="absolute -bottom-2 inset-x-2 h-4 bg-emerald-500/25 rounded-full blur-md" />
+                  <span className="text-[8px] font-mono font-bold tracking-widest text-emerald-400/80 uppercase text-center block pointer-events-none">
+                    • 4°C Docked •
+                  </span>
+                </div>
+                <div className="text-xs text-neutral-400 space-y-1">
+                  <span className="text-emerald-400 font-mono text-[10px] uppercase font-bold tracking-wider block">
+                    ✨ Sub-Zero Preserved
+                  </span>
+                  <p className="text-[11px] text-neutral-400 leading-snug">
+                    Docked directly from the cold extraction chamber into your eco-aluminum can.
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* Quick Links */}
-            <div>
+            <div className="lg:col-span-1">
               <h4 className="text-sm font-semibold uppercase tracking-wider text-neutral-300 mb-4">
                 Navigation
               </h4>
@@ -2533,7 +2692,7 @@ function App() {
             </div>
 
             {/* Can Flavours */}
-            <div>
+            <div className="lg:col-span-1">
               <h4 className="text-sm font-semibold uppercase tracking-wider text-neutral-300 mb-4">
                 Our Cans
               </h4>
@@ -2562,7 +2721,7 @@ function App() {
             </div>
 
             {/* Location & Contact Info */}
-            <div>
+            <div className="lg:col-span-1">
               <h4 className="text-sm font-semibold uppercase tracking-wider text-neutral-300 mb-4">
                 Store & Support
               </h4>
