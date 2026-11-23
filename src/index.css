@@ -772,6 +772,59 @@ img {
    BIG DELIVERY TRUCK, SILENCER SMOKE & BOX LOADING
    ==================================================== */
 
+/* ====================================================
+   FULLSCREEN CINEMATIC ROAD & TRUCK DELIVERY JOURNEY
+   ==================================================== */
+
+/* Fullscreen Truck Arrival from website far left */
+@keyframes truckArriveFromFarLeft {
+  0% {
+    transform: translate3d(calc(-50vw - 450px), 0, 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  75% {
+    transform: translate3d(24px, 0, 0);
+  }
+  88% {
+    transform: translate3d(-10px, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+/* Fullscreen Truck Departure speeding away to website far right */
+@keyframes truckDepartToFarRight {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+  15% {
+    transform: translate3d(-15px, 0, 0) rotate(-1deg);
+  }
+  30% {
+    transform: translate3d(40px, 0, 0) rotate(1deg);
+  }
+  100% {
+    transform: translate3d(calc(50vw + 600px), 0, 0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.animate-truck-fullscreen-arrive {
+  animation: truckArriveFromFarLeft 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform;
+}
+
+.animate-truck-fullscreen-depart {
+  animation: truckDepartToFarRight 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  will-change: transform;
+}
+
 /* Big Truck Driving In from Left */
 @keyframes truckArriveLeft {
   0% {

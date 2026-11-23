@@ -285,40 +285,40 @@ function App() {
     setPackingStep("cans");
 
     // Sequence of animations:
-    // 1. Cans drop side by side into the box (0 - 1.4s)
+    // 1. Cans drop into large box in center (0 - 1.5s)
     setTimeout(() => {
       setPackingStep("wrapping"); // Box flaps fold in
-    }, 1400);
+    }, 1500);
 
-    // 2. Heavy-duty tape rolls across the center seam (1.4 - 2.4s)
+    // 2. Heavy-duty tape seals across (1.5 - 2.6s)
     setTimeout(() => {
-      setPackingStep("tape"); // Tape seals across
-    }, 2400);
+      setPackingStep("tape");
+    }, 2600);
 
-    // 3. Official shipping stamp slams onto the sealed box (2.4 - 3.4s)
+    // 3. Shipping label stamps down (2.6 - 3.7s)
     setTimeout(() => {
-      setPackingStep("stamp"); // Shipping label stamps down
-    }, 3400);
+      setPackingStep("stamp");
+    }, 3700);
 
-    // 4. Big Delivery Truck arrives from the left with headlights & silencer smoke (3.4 - 4.8s)
+    // 4. Delivery Truck drives in from full left edge of website to center (3.7 - 6.0s)
     setTimeout(() => {
       setPackingStep("truck-arrive");
-    }, 4600);
+    }, 4800);
 
-    // 5. Sealed box lifts up and slides right into the truck cargo bay! (4.8 - 6.2s)
+    // 5. Sealed box lifts and loads into truck cargo bay (6.0 - 7.6s)
     setTimeout(() => {
       setPackingStep("box-loading");
-    }, 6200);
+    }, 7000);
 
-    // 6. Truck silencer blasts heavy smoke and speeds off to the right! (6.2 - 8.0s)
+    // 6. Truck engine revs, smoke puffs and truck departs to full right edge (7.6 - 9.8s)
     setTimeout(() => {
       setPackingStep("truck-exit");
-    }, 7600);
+    }, 8500);
 
-    // 7. Order celebration & completed (8.0s onwards)
+    // 7. Order celebration card shown after truck is completely gone (9.8s onwards)
     setTimeout(() => {
       setPackingStep("complete");
-    }, 9400);
+    }, 10700);
   };
 
   const toggleLike = (id) => {
@@ -809,342 +809,320 @@ function App() {
         </div>
       )}
 
-      {/* 📦 3D BOX PACKAGING, WRAP, TAPE SEAL & BIG DELIVERY TRUCK MODAL */}
+      {/* 📦 FULLSCREEN BLURRED CINEMATIC PACKAGING & HIGHWAY TRUCK DELIVERY */}
       {isPackingModalOpen && (
-        <div className="fixed inset-0 z-[1000000] flex items-center justify-center p-2 xs:p-4 sm:p-6 bg-black/25 backdrop-blur-2xl overflow-y-auto">
-          <div className="relative w-full max-w-3xl bg-neutral-950/85 backdrop-blur-3xl border border-white/20 rounded-2xl sm:rounded-3xl p-3.5 xs:p-5 sm:p-8 text-white shadow-[0_30px_90px_rgba(0,0,0,0.4)] flex flex-col items-center overflow-hidden my-auto">
-            {/* Top Status & Close */}
-            <div className="w-full flex justify-between items-start mb-2 sm:mb-4">
-              <div>
-                <span className="text-[10px] xs:text-xs font-mono uppercase tracking-wider text-emerald-400">
-                  {packingStep === "cans" && "Step 1/6 • Dropping Cans in Box"}
-                  {packingStep === "wrapping" && "Step 2/6 • Folding Insulated Flaps"}
-                  {packingStep === "tape" && "Step 3/6 • Applying Heavy-Duty Tape Seal"}
-                  {packingStep === "stamp" && "Step 4/6 • Stamping Delivery Label"}
-                  {packingStep === "truck-arrive" && "Step 5/6 • Big Express Truck Arriving from Left"}
-                  {packingStep === "box-loading" && "Step 5/6 • Loading Sealed Box into Truck"}
-                  {packingStep === "truck-exit" && "Step 6/6 • Silencer Smoke Blasting & Truck Departing"}
-                  {packingStep === "complete" && "✨ Order Dispatched to Faisal Sikandar"}
-                </span>
-                <h3 className="text-base xs:text-xl sm:text-2xl font-bold tracking-tight text-white mt-0.5">
-                  {(packingStep === "truck-arrive" || packingStep === "box-loading" || packingStep === "truck-exit")
-                    ? "Express Truck Loading & Departure 🚚"
-                    : packingStep === "complete"
-                      ? "Out for Chilled Delivery! 🚀"
-                      : "Packaging Your Juice Box"}
-                </h3>
-              </div>
-
-              {packingStep === "complete" && (
-                <button
-                  onClick={() => {
-                    setIsPackingModalOpen(false);
-                    setCartCount(0);
-                    setCartItems([]);
+        <div className="fixed inset-0 z-[1000000] flex flex-col justify-between backdrop-blur-2xl bg-black/60 select-none overflow-hidden animate-in fade-in duration-300">
+          {/* Confetti Particles on Complete */}
+          {packingStep === "complete" && (
+            <div className="absolute inset-0 pointer-events-none z-50">
+              {[...Array(24)].map((_, i) => (
+                <span
+                  key={i}
+                  className="absolute text-xl animate-confetti"
+                  style={{
+                    left: `${(i * 4.5) % 96}%`,
+                    top: `${(i * 7) % 40}%`,
+                    animationDelay: `${i * 0.08}s`,
                   }}
-                  className="p-1.5 sm:p-2 rounded-full hover:bg-white/10 text-neutral-400 hover:text-white transition-colors cursor-pointer"
                 >
-                  <CgCloseR size={20} className="sm:text-[22px]" />
+                  {["🎉", "✨", "🧃", "❄️", "🚚", "⭐", "💚"][i % 7]}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Top Bar: Live Status & Controls */}
+          <div className="relative z-50 w-full max-w-6xl mx-auto p-4 sm:p-6 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+              <span className="text-xs sm:text-sm font-mono font-bold tracking-wider uppercase text-emerald-400 bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15 backdrop-blur-md">
+                {packingStep === "cans" && "Step 1/5 • Packing Fresh Cans into Box"}
+                {packingStep === "wrapping" && "Step 2/5 • Folding Insulated Flaps"}
+                {packingStep === "tape" && "Step 3/5 • Applying Heavy-Duty Security Tape"}
+                {packingStep === "stamp" && "Step 4/5 • Priority Label Stamped"}
+                {packingStep === "truck-arrive" && "Step 5/5 • Delivery Truck Arriving from Far Left 🚚"}
+                {packingStep === "box-loading" && "Step 5/5 • Loading Sealed Box into Truck"}
+                {packingStep === "truck-exit" && "Step 5/5 • Express Truck Departing to Right 🚀"}
+                {packingStep === "complete" && "✨ Order Dispatched to Faisal Sikandar"}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {packingStep !== "complete" && (
+                <button
+                  onClick={() => setPackingStep("complete")}
+                  className="text-xs font-semibold text-neutral-300 hover:text-white bg-white/10 hover:bg-white/20 border border-white/15 px-3 py-1.5 rounded-full transition-all cursor-pointer"
+                >
+                  Skip ⏩
                 </button>
               )}
+              <button
+                onClick={() => {
+                  setIsPackingModalOpen(false);
+                  if (packingStep === "complete") {
+                    setCartCount(0);
+                    setCartItems([]);
+                  }
+                }}
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-neutral-300 hover:text-white border border-white/15 transition-colors cursor-pointer"
+                title="Close"
+              >
+                <CgCloseR size={20} />
+              </button>
             </div>
+          </div>
 
-            {/* Arena: Completely Transparent on top of Blur (No Black Background!) */}
-            <div className="relative w-full h-[290px] xs:h-[330px] sm:h-[400px] md:h-[420px] flex items-center justify-center my-1 sm:my-2 select-none overflow-hidden rounded-xl sm:rounded-2xl bg-transparent">
-              {/* Confetti Particles on Complete */}
-              {packingStep === "complete" && (
-                <div className="absolute inset-0 pointer-events-none z-50">
-                  {[...Array(22)].map((_, i) => (
-                    <span
-                      key={i}
-                      className="absolute text-xl animate-confetti"
-                      style={{
-                        left: `${(i * 5) % 95}%`,
-                        top: `${(i * 8) % 35}%`,
-                        animationDelay: `${i * 0.07}s`,
-                      }}
-                    >
-                      {["🎉", "✨", "🧃", "❄️", "🚚", "⭐", "💚"][i % 7]}
-                    </span>
-                  ))}
+          {/* Center Arena */}
+          <div className="relative flex-1 w-full flex items-center justify-center p-4 overflow-hidden z-30">
+            {/* STAGE 1: BARA CARDBOARD BOX IN CENTER (Cans drop in, flaps close, tape seals, stamp hits) */}
+            {(packingStep === "cans" ||
+              packingStep === "wrapping" ||
+              packingStep === "tape" ||
+              packingStep === "stamp") && (
+              <div className="relative w-[320px] xs:w-[380px] sm:w-[520px] md:w-[580px] h-64 xs:h-72 sm:h-84 md:h-92 bg-[#c89666] border-2 border-[#8f5d30] rounded-3xl shadow-[0_35px_80px_rgba(0,0,0,0.6)] flex flex-col justify-between overflow-hidden animate-in zoom-in-95 duration-500">
+                {/* Rich Kraft Cardboard Texture */}
+                <div className="absolute inset-0 bg-gradient-to-b from-[#e3ab7a] via-[#c89666] to-[#9c6a3b] opacity-95" />
+
+                {/* Box Header Branding */}
+                <div className="absolute top-3 sm:top-5 left-4 sm:left-6 z-10 flex items-center gap-2 opacity-90">
+                  <span className="font-black tracking-tight text-base sm:text-2xl text-[#3d2411] drop-shadow-sm">
+                    FAISAL JUICE
+                  </span>
+                  <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-[#3d2411]"></span>
+                  <span className="text-[9px] sm:text-xs font-mono font-bold tracking-widest text-[#3d2411] border border-[#3d2411] px-2 py-0.5 rounded-md">
+                    100% RAW • CHILLED 24H EXPRESS
+                  </span>
                 </div>
-              )}
 
-              {/* STAGE A: BOX PACKING, FLAP WRAP & TAPE SEAL (Level Ka Bara Box!) */}
-              {(packingStep === "cans" ||
-                packingStep === "wrapping" ||
-                packingStep === "tape" ||
-                packingStep === "stamp") && (
-                  <div className="relative w-full max-w-[280px] xs:max-w-[340px] sm:max-w-[460px] md:max-w-[500px] h-52 xs:h-56 sm:h-68 md:h-72 bg-[#c89666] border-2 border-[#a06f41] rounded-2xl sm:rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.45)] flex flex-col justify-between overflow-hidden">
-                    {/* Rich Kraft Texture */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-[#e2ab7a] via-[#c89666] to-[#a06f41] opacity-95" />
-
-                    {/* Box Brand Header */}
-                    <div className="absolute top-2.5 sm:top-3.5 left-2.5 sm:left-5 z-10 flex items-center gap-1.5 sm:gap-2.5 opacity-90">
-                      <span className="font-black tracking-tight text-sm xs:text-base sm:text-xl text-[#4a2e18] drop-shadow-sm">
-                        FAISAL JUICE
-                      </span>
-                      <span className="w-1.5 sm:w-2.5 h-1.5 sm:h-2.5 rounded-full bg-[#4a2e18]"></span>
-                      <span className="text-[8px] xs:text-[9px] sm:text-[11px] font-mono font-bold tracking-wider sm:tracking-widest text-[#4a2e18] border border-[#4a2e18] px-1 sm:px-2 py-0.5 rounded-md">
-                        CHILLED 24H EXPRESS
-                      </span>
-                    </div>
-
-                    {/* INSIDE: Cans Dropping In Side by Side */}
-                    <div className="absolute inset-x-0 bottom-3 sm:bottom-4 top-11 sm:top-14 z-20 flex items-end justify-center gap-1.5 xs:gap-2.5 sm:gap-6 px-1.5 sm:px-4 pb-1 sm:pb-2">
-                      {cartItems
-                        .flatMap((item) =>
-                          Array.from({ length: Math.min(item.qty, 2) }).map((_, i) => ({
-                            ...item,
-                            uniqueKey: `${item.id}-${i}`,
-                          }))
-                        )
-                        .slice(0, 4)
-                        .map((item, idx) => (
-                          <div
-                            key={item.uniqueKey}
-                            className={`flex flex-col items-center transition-all duration-500 ${packingStep === "cans"
-                              ? "animate-can-box-drop"
-                              : "scale-100 opacity-95"
-                              }`}
-                            style={{
-                              animationDelay: `${idx * 220}ms`,
-                            }}
-                          >
-                            {/* 3D Can Mockup inside Box */}
-                            <div
-                              className="w-10 xs:w-12 sm:w-16 md:w-18 aspect-[45/83] drop-shadow-2xl"
-                              style={{
-                                backgroundImage: `url(${labels}), url(${can})`,
-                                maskImage: `url(${can})`,
-                                WebkitMaskImage: `url(${can})`,
-                                backgroundPosition: `${item.bgPosition}, center`,
-                                backgroundSize: "300% 100%, 100% 100%",
-                                backgroundRepeat: "no-repeat, no-repeat",
-                                backgroundBlendMode: "multiply",
-                                maskSize: "100% 100%",
-                                WebkitMaskSize: "100% 100%",
-                                filter: "drop-shadow(0 10px 18px rgba(0,0,0,0.4))",
-                              }}
-                            />
-                            <span className="text-[7px] xs:text-[8px] sm:text-[10px] font-bold text-neutral-900 mt-1 sm:mt-1.5 bg-white/95 backdrop-blur-sm px-1 sm:px-2 py-0.5 rounded-md shadow-sm whitespace-nowrap">
-                              {item.name.split(" ")[1] || "Juice"}
-                            </span>
-                          </div>
-                        ))}
-                    </div>
-
-                    {/* Left Flap Folding In */}
-                    <div
-                      className={`absolute top-0 left-0 w-1/2 h-full bg-[#ba8858] border-r border-[#96673b] origin-top z-30 transition-all duration-700 shadow-lg ${packingStep !== "cans"
-                        ? "translate-y-0 opacity-100"
-                        : "-translate-y-full opacity-0 pointer-events-none"
-                        }`}
-                    />
-
-                    {/* Right Flap Folding In */}
-                    <div
-                      className={`absolute top-0 right-0 w-1/2 h-full bg-[#b07e4f] border-l border-[#96673b] origin-top z-30 transition-all duration-700 shadow-lg ${packingStep !== "cans"
-                        ? "translate-y-0 opacity-100"
-                        : "-translate-y-full opacity-0 pointer-events-none"
-                        }`}
-                    />
-
-                    {/* PACKAGING TAPE (SEALS ACROSS THE MIDDLE) */}
-                    {(packingStep === "tape" || packingStep === "stamp") && (
-                      <div className="absolute top-1/2 -translate-y-1/2 left-0 z-40 w-full overflow-hidden flex items-center">
-                        <div className="h-7 sm:h-9 bg-[#855a32] border-y-2 border-[#5c3c1e] text-amber-200 text-[8px] xs:text-[9px] sm:text-[11px] font-mono font-bold tracking-wider sm:tracking-widest flex items-center justify-around shadow-xl animate-tape-roll select-none px-1">
-                          <span className="opacity-95">🔒 FAISAL JUICE SEALED</span>
-                          <span className="opacity-95 hidden xs:inline">★ DO NOT TAMPER</span>
-                          <span className="opacity-95">🔒 PRIORITY CHILLED</span>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* SHIPPING LABEL STAMP (SLAMS ON BOX) */}
-                    {packingStep === "stamp" && (
-                      <div className="absolute bottom-2 xs:bottom-3 sm:bottom-4 right-2 xs:right-3 sm:right-4 z-40 bg-white text-neutral-900 p-2 sm:p-3 rounded-lg sm:rounded-xl shadow-2xl border border-neutral-300 w-36 xs:w-44 sm:w-52 animate-stamp-slam select-none">
-                        <div className="flex justify-between items-center border-b border-neutral-200 pb-1 mb-1">
-                          <span className="text-[8px] xs:text-[9px] sm:text-[10px] font-black tracking-widest text-emerald-600 uppercase">
-                            EXPRESS CHILLED
-                          </span>
-                          <span className="text-[7px] xs:text-[8px] sm:text-[9px] font-mono text-neutral-500 font-bold">#FJ-8891</span>
-                        </div>
-                        <p className="text-[8px] xs:text-[9px] sm:text-[10px] font-extrabold leading-tight text-neutral-800">
-                          DELIVER TO:
-                        </p>
-                        <p className="text-[10px] xs:text-xs sm:text-sm font-black text-neutral-900 tracking-tight">
-                          Faisal Sikandar
-                        </p>
-                        <p className="text-[7px] xs:text-[8px] sm:text-[9px] text-neutral-600 leading-none mt-0.5 sm:mt-1">
-                          Ali Bootcamp • Priority Route
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-              {/* STAGE B: BIG DELIVERY TRUCK ARRIVAL, BOX LOADING & SMOKE BLAST */}
-              {(packingStep === "truck-arrive" ||
-                packingStep === "box-loading" ||
-                packingStep === "truck-exit") && (
-                  <div className="relative w-full h-full flex flex-col justify-end items-center pb-4 sm:pb-8 overflow-hidden">
-                    {/* Highway Road with Moving Dash Stripes (Transparent / Frosted Glass Road!) */}
-                    <div className="absolute bottom-4 sm:bottom-6 inset-x-0 h-8 sm:h-10 bg-neutral-900/60 backdrop-blur-md border-t border-neutral-600/50 flex items-center px-4 rounded-xl shadow-inner">
-                      <div className="w-full h-1 animate-road-line opacity-90" />
-                    </div>
-
-                    {/* Responsive Truck Scale Wrapper (Fluid on Any Mobile & Desktop Device) */}
-                    <div className="scale-[0.56] min-[360px]:scale-[0.66] xs:scale-[0.78] sm:scale-90 md:scale-100 origin-bottom transition-transform duration-300">
-                      {/* Big Delivery Truck */}
+                {/* Inside: Cans Dropping In Side by Side */}
+                <div className="absolute inset-x-0 bottom-4 sm:bottom-6 top-14 sm:top-18 z-20 flex items-end justify-center gap-2 sm:gap-6 px-3 sm:px-6 pb-2">
+                  {cartItems
+                    .flatMap((item) =>
+                      Array.from({ length: Math.min(item.qty, 2) }).map((_, i) => ({
+                        ...item,
+                        uniqueKey: `${item.id}-${i}`,
+                      }))
+                    )
+                    .slice(0, 4)
+                    .map((item, idx) => (
                       <div
-                        className={`relative z-20 flex items-end mb-2 transition-all duration-700 ${packingStep === "truck-arrive"
-                          ? "animate-truck-arrive"
-                          : packingStep === "truck-exit"
-                            ? "animate-truck-speed-away"
-                            : ""
-                          }`}
+                        key={item.uniqueKey}
+                        className={`flex flex-col items-center transition-all duration-500 ${
+                          packingStep === "cans" ? "animate-can-box-drop" : "scale-100 opacity-95"
+                        }`}
+                        style={{
+                          animationDelay: `${idx * 200}ms`,
+                        }}
                       >
-                        {/* Headlight Glowing Beam shooting forward */}
-                        <div className="absolute -right-36 bottom-6 w-44 h-28 headlight-beam pointer-events-none z-30" />
-
-                        {/* Silencer Exhaust Pipe with Real Puffed Smoke */}
-                        <div className="absolute -left-6 bottom-8 z-10 pointer-events-none">
-                          {/* Chrome Angled Exhaust Pipe */}
-                          <div className="w-4 h-10 bg-neutral-400 border border-neutral-200 rounded-t-sm -rotate-12 transform origin-bottom shadow-md" />
-                          {/* Silencer Smoke Clouds Puffs */}
-                          <div className="absolute -top-3 -left-3 w-7 h-7 rounded-full bg-neutral-300/85 blur-[2px] animate-smoke-puff-1" />
-                          <div className="absolute -top-6 -left-7 w-9 h-9 rounded-full bg-neutral-400/75 blur-[3px] animate-smoke-puff-2" />
-                          <div className="absolute -top-8 -left-10 w-12 h-12 rounded-full bg-neutral-500/65 blur-[4px] animate-smoke-puff-3" />
-                        </div>
-
-                        {/* Truck Body */}
-                        <div className="flex items-end">
-                          {/* Rear Cargo Refrigerated Box Container */}
-                          <div className="relative w-64 sm:w-80 h-44 bg-gradient-to-b from-neutral-100 to-neutral-200 border-2 border-neutral-300 rounded-l-2xl shadow-2xl flex flex-col justify-between p-4 overflow-hidden">
-                            {/* Insulated Panels Texture */}
-                            <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,transparent,transparent_18px,rgba(0,0,0,0.03)_18px,rgba(0,0,0,0.03)_22px)] opacity-70" />
-
-                            <div className="relative z-10 flex justify-between items-center">
-                              <span className="font-black text-sm sm:text-base tracking-tighter text-neutral-900">
-                                FAISAL JUICE<span className="text-emerald-500">.</span>EXPRESS
-                              </span>
-                              <span className="text-[10px] font-mono font-bold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full border border-blue-200 flex items-center gap-1">
-                                <span>❄️</span> -4°C CHILLED
-                              </span>
-                            </div>
-
-                            <div className="relative z-10 flex items-center justify-between mt-auto">
-                              <span className="text-[10px] text-neutral-700 font-mono font-bold">
-                                TO: FAISAL SIKANDAR
-                              </span>
-                              <span
-                                className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${packingStep === "box-loading"
-                                  ? "bg-amber-100 text-amber-800 animate-pulse border border-amber-300"
-                                  : "bg-emerald-100 text-emerald-800 border border-emerald-300"
-                                  }`}
-                              >
-                                {packingStep === "truck-arrive" && "DOORS OPEN 🔓"}
-                                {packingStep === "box-loading" && "LOADING BOX 📦"}
-                                {packingStep === "truck-exit" && "LOCKED & DISPATCHED 🔒"}
-                              </span>
-                            </div>
-
-                            {/* The Box Loading into the Cargo Bay */}
-                            {packingStep === "box-loading" && (
-                              <div className="absolute inset-0 flex items-center justify-center z-30 pointer-events-none">
-                                <div className="w-28 h-18 bg-[#c89666] border-2 border-[#7f5539] rounded-xl shadow-2xl flex flex-col items-center justify-center text-[10px] font-bold text-white animate-box-into-truck">
-                                  <span>📦 SEALED</span>
-                                  <span className="text-[8px] text-amber-200 font-mono">
-                                    FAISAL SIKANDAR
-                                  </span>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-
-                          {/* Front Cab */}
-                          <div className="relative w-32 sm:w-40 h-36 bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 border-2 border-emerald-400 rounded-r-2xl shadow-2xl flex flex-col justify-between p-3.5 overflow-hidden">
-                            {/* Windshield with Driver Silhouette */}
-                            <div className="w-18 h-16 bg-sky-200/40 border border-white/50 rounded-tr-xl self-end flex items-center justify-center shadow-inner">
-                              <span className="text-base opacity-80 select-none">👨‍✈️</span>
-                            </div>
-
-                            {/* Grille & Glowing Headlight */}
-                            <div className="flex items-center justify-between pt-1">
-                              <div className="h-4 w-14 bg-neutral-900 rounded flex items-center justify-around px-1">
-                                <span className="w-1.5 h-2.5 bg-neutral-500 rounded-full" />
-                                <span className="w-1.5 h-2.5 bg-neutral-500 rounded-full" />
-                                <span className="w-1.5 h-2.5 bg-neutral-500 rounded-full" />
-                              </div>
-                              <div className="w-5 h-5 rounded-full bg-yellow-300 border-2 border-yellow-100 shadow-[0_0_20px_#fde047]" />
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Alloy Wheels */}
-                        <div className="absolute -bottom-4 inset-x-8 flex justify-between px-2 z-30">
-                          <div className="w-11 h-11 rounded-full bg-neutral-900 border-2 border-neutral-700 flex items-center justify-center shadow-2xl animate-recycle-spin">
-                            <div className="w-4 h-4 rounded-full bg-neutral-400 border border-neutral-200" />
-                          </div>
-                          <div className="w-11 h-11 rounded-full bg-neutral-900 border-2 border-neutral-700 flex items-center justify-center shadow-2xl animate-recycle-spin">
-                            <div className="w-4 h-4 rounded-full bg-neutral-400 border border-neutral-200" />
-                          </div>
-                          <div className="w-11 h-11 rounded-full bg-neutral-900 border-2 border-neutral-700 flex items-center justify-center shadow-2xl animate-recycle-spin">
-                            <div className="w-4 h-4 rounded-full bg-neutral-400 border border-neutral-200" />
-                          </div>
-                        </div>
+                        <div
+                          className="w-12 xs:w-14 sm:w-20 md:w-22 aspect-[45/83] drop-shadow-2xl"
+                          style={{
+                            backgroundImage: `url(${labels}), url(${can})`,
+                            maskImage: `url(${can})`,
+                            WebkitMaskImage: `url(${can})`,
+                            backgroundPosition: `${item.bgPosition}, center`,
+                            backgroundSize: "300% 100%, 100% 100%",
+                            backgroundRepeat: "no-repeat, no-repeat",
+                            backgroundBlendMode: "multiply",
+                            maskSize: "100% 100%",
+                            WebkitMaskSize: "100% 100%",
+                            filter: "drop-shadow(0 12px 20px rgba(0,0,0,0.45))",
+                          }}
+                        />
+                        <span className="text-[8px] sm:text-xs font-bold text-neutral-900 mt-1.5 bg-white/95 backdrop-blur-sm px-2 py-0.5 rounded-md shadow-sm whitespace-nowrap">
+                          {item.name.split(" ")[1] || "Juice"}
+                        </span>
                       </div>
+                    ))}
+                </div>
+
+                {/* Left Flap Folding In */}
+                <div
+                  className={`absolute top-0 left-0 w-1/2 h-full bg-[#ba8858] border-r border-[#96673b] origin-top z-30 transition-all duration-700 shadow-xl ${
+                    packingStep !== "cans" ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
+                  }`}
+                />
+
+                {/* Right Flap Folding In */}
+                <div
+                  className={`absolute top-0 right-0 w-1/2 h-full bg-[#b07e4f] border-l border-[#96673b] origin-top z-30 transition-all duration-700 shadow-xl ${
+                    packingStep !== "cans" ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
+                  }`}
+                />
+
+                {/* PACKAGING TAPE (SEALS ACROSS MIDDLE) */}
+                {(packingStep === "tape" || packingStep === "stamp") && (
+                  <div className="absolute top-1/2 -translate-y-1/2 left-0 z-40 w-full overflow-hidden flex items-center">
+                    <div className="h-8 sm:h-11 bg-[#784f29] border-y-2 border-[#472c14] text-amber-200 text-[9px] sm:text-xs font-mono font-bold tracking-widest flex items-center justify-around shadow-2xl animate-tape-roll select-none px-2 w-full">
+                      <span>🔒 FAISAL JUICE SEALED</span>
+                      <span className="hidden sm:inline">★ DO NOT TAMPER</span>
+                      <span>🔒 PRIORITY CHILLED</span>
                     </div>
                   </div>
                 )}
 
-              {/* STAGE C: CELEBRATION & ORDER SUCCESS SUMMARY */}
-              {packingStep === "complete" && (
-                <div className="relative z-30 flex flex-col items-center text-center p-3 xs:p-4 sm:p-6 max-w-md animate-in zoom-in-95 duration-500">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-emerald-500 text-black flex items-center justify-center text-2xl sm:text-3xl font-bold shadow-xl mb-2 sm:mb-3 animate-bounce">
-                    ✓
+                {/* SHIPPING LABEL STAMP (SLAMS ON BOX) */}
+                {packingStep === "stamp" && (
+                  <div className="absolute bottom-3 sm:bottom-5 right-3 sm:right-6 z-40 bg-white text-neutral-900 p-2.5 sm:p-4 rounded-xl shadow-2xl border border-neutral-300 w-44 sm:w-56 animate-stamp-slam select-none">
+                    <div className="flex justify-between items-center border-b border-neutral-200 pb-1 mb-1.5">
+                      <span className="text-[9px] sm:text-[10px] font-black tracking-widest text-emerald-600 uppercase">
+                        EXPRESS CHILLED
+                      </span>
+                      <span className="text-[8px] sm:text-[9px] font-mono text-neutral-500 font-bold">#FJ-8891</span>
+                    </div>
+                    <p className="text-[9px] sm:text-[10px] font-extrabold leading-tight text-neutral-800">
+                      DELIVER TO:
+                    </p>
+                    <p className="text-xs sm:text-base font-black text-neutral-900 tracking-tight">
+                      Faisal Sikandar
+                    </p>
+                    <p className="text-[8px] sm:text-[10px] text-neutral-600 leading-none mt-1">
+                      Ali Bootcamp • Priority Route
+                    </p>
                   </div>
-                  <h4 className="text-lg xs:text-xl sm:text-2xl font-black text-white mb-1">
-                    Order Dispatched Successfully!
-                  </h4>
-                  <p className="text-xs sm:text-sm text-neutral-300 mb-3 sm:mb-4 leading-relaxed">
-                    The delivery truck has loaded your sealed juice box and departed for chilled express delivery to{" "}
-                    <strong className="text-emerald-400">Faisal Sikandar</strong> (Ali Bootcamp).
-                  </p>
-                  <div className="w-full bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-2.5 sm:p-3 grid grid-cols-3 gap-1 sm:gap-2 text-[10px] sm:text-xs text-neutral-300 mb-2">
-                    <div>
-                      <span className="text-neutral-500 block">Status</span>
-                      <strong className="text-emerald-400 font-bold">On Route 🚚</strong>
+                )}
+              </div>
+            )}
+
+            {/* STAGE 2: BIG EXPRESS TRUCK (Driving from far left of website -> center -> loading box -> speeding to far right) */}
+            {(packingStep === "truck-arrive" ||
+              packingStep === "box-loading" ||
+              packingStep === "truck-exit") && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                {/* Floating Sealed Box being loaded into truck */}
+                {packingStep === "box-loading" && (
+                  <div className="absolute z-40 animate-box-into-truck">
+                    <div className="w-36 sm:w-48 h-24 sm:h-32 bg-[#c89666] border-2 border-[#7f5539] rounded-2xl shadow-2xl flex flex-col items-center justify-center text-white font-bold p-2">
+                      <span className="text-xs sm:text-sm">📦 FAISAL JUICE</span>
+                      <span className="text-[9px] sm:text-[11px] text-amber-200 font-mono mt-0.5">
+                        To: Faisal Sikandar
+                      </span>
+                      <span className="text-[8px] font-mono bg-emerald-600 px-2 py-0.5 rounded-full mt-1">
+                        -4°C CHILLED
+                      </span>
                     </div>
-                    <div>
-                      <span className="text-neutral-500 block">Temperature</span>
-                      <strong className="text-white font-bold">❄️ -4°C</strong>
+                  </div>
+                )}
+
+                {/* Big Delivery Truck on the road */}
+                <div
+                  className={`absolute bottom-20 sm:bottom-24 left-1/2 -ml-48 sm:-ml-64 scale-[0.72] xs:scale-[0.82] sm:scale-95 md:scale-105 origin-bottom transition-all duration-700 ${
+                    packingStep === "truck-arrive"
+                      ? "animate-truck-fullscreen-arrive"
+                      : packingStep === "truck-exit"
+                      ? "animate-truck-fullscreen-depart"
+                      : ""
+                  }`}
+                >
+                  <div className="relative z-20 flex items-end">
+                    {/* Headlight Glowing Beam shooting forward */}
+                    <div className="absolute -right-48 bottom-6 w-56 h-32 headlight-beam pointer-events-none z-30" />
+
+                    {/* Silencer Exhaust Pipe with Real Puffed Smoke */}
+                    <div className="absolute -left-6 bottom-8 z-10 pointer-events-none">
+                      <div className="w-4 h-11 bg-neutral-400 border border-neutral-200 rounded-t-sm -rotate-12 transform origin-bottom shadow-md" />
+                      <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-neutral-300/85 blur-[2px] animate-smoke-puff-1" />
+                      <div className="absolute -top-6 -left-7 w-10 h-10 rounded-full bg-neutral-400/75 blur-[3px] animate-smoke-puff-2" />
+                      <div className="absolute -top-8 -left-10 w-14 h-14 rounded-full bg-neutral-500/65 blur-[4px] animate-smoke-puff-3" />
                     </div>
-                    <div>
-                      <span className="text-neutral-500 block">Est. Time</span>
-                      <strong className="text-white font-bold">Today 24h</strong>
+
+                    {/* Truck Body */}
+                    <div className="flex items-end">
+                      {/* Rear Cargo Refrigerated Box Container */}
+                      <div className="relative w-72 sm:w-88 h-48 bg-gradient-to-b from-neutral-100 to-neutral-200 border-2 border-neutral-300 rounded-l-2xl shadow-2xl flex flex-col justify-between p-4 overflow-hidden">
+                        <div className="absolute inset-0 bg-[repeating-linear-gradient(90deg,transparent,transparent_18px,rgba(0,0,0,0.03)_18px,rgba(0,0,0,0.03)_22px)] opacity-70" />
+
+                        <div className="relative z-10 flex justify-between items-center">
+                          <span className="font-black text-sm sm:text-base tracking-tighter text-neutral-900">
+                            FAISAL JUICE<span className="text-emerald-500">.</span>EXPRESS
+                          </span>
+                          <span className="text-[10px] font-mono font-bold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full border border-blue-200 flex items-center gap-1">
+                            <span>❄️</span> -4°C CHILLED
+                          </span>
+                        </div>
+
+                        <div className="relative z-10 flex items-center justify-between mt-auto">
+                          <span className="text-[10px] text-neutral-700 font-mono font-bold">
+                            TO: FAISAL SIKANDAR
+                          </span>
+                          <span
+                            className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
+                              packingStep === "box-loading"
+                                ? "bg-amber-100 text-amber-800 animate-pulse border border-amber-300"
+                                : "bg-emerald-100 text-emerald-800 border border-emerald-300"
+                            }`}
+                          >
+                            {packingStep === "truck-arrive" && "DOORS OPEN 🔓"}
+                            {packingStep === "box-loading" && "LOADING BOX 📦"}
+                            {packingStep === "truck-exit" && "LOCKED & DISPATCHED 🔒"}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Front Cab */}
+                      <div className="relative w-36 sm:w-44 h-40 bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 border-2 border-emerald-400 rounded-r-2xl shadow-2xl flex flex-col justify-between p-3.5 overflow-hidden">
+                        <div className="w-20 h-18 bg-sky-200/40 border border-white/50 rounded-tr-xl self-end flex items-center justify-center shadow-inner">
+                          <span className="text-lg opacity-85 select-none">👨‍✈️</span>
+                        </div>
+
+                        <div className="flex items-center justify-between pt-1">
+                          <div className="h-4 w-16 bg-neutral-900 rounded flex items-center justify-around px-1">
+                            <span className="w-1.5 h-2.5 bg-neutral-500 rounded-full" />
+                            <span className="w-1.5 h-2.5 bg-neutral-500 rounded-full" />
+                            <span className="w-1.5 h-2.5 bg-neutral-500 rounded-full" />
+                          </div>
+                          <div className="w-6 h-6 rounded-full bg-yellow-300 border-2 border-yellow-100 shadow-[0_0_24px_#fde047]" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Alloy Wheels */}
+                    <div className="absolute -bottom-5 inset-x-8 flex justify-between px-2 z-30">
+                      <div className="w-12 h-12 rounded-full bg-neutral-900 border-2 border-neutral-700 flex items-center justify-center shadow-2xl animate-recycle-spin">
+                        <div className="w-4 h-4 rounded-full bg-neutral-400 border border-neutral-200" />
+                      </div>
+                      <div className="w-12 h-12 rounded-full bg-neutral-900 border-2 border-neutral-700 flex items-center justify-center shadow-2xl animate-recycle-spin">
+                        <div className="w-4 h-4 rounded-full bg-neutral-400 border border-neutral-200" />
+                      </div>
+                      <div className="w-12 h-12 rounded-full bg-neutral-900 border-2 border-neutral-700 flex items-center justify-center shadow-2xl animate-recycle-spin">
+                        <div className="w-4 h-4 rounded-full bg-neutral-400 border border-neutral-200" />
+                      </div>
                     </div>
                   </div>
                 </div>
-              )}
-            </div>
-
-            {/* Bottom Actions */}
-            <div className="w-full pt-3 sm:pt-4 border-t border-white/10 mt-1 sm:mt-2 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
-              <div>
-                <p className="text-[11px] sm:text-xs text-neutral-400">Total Packed:</p>
-                <p className="text-base sm:text-lg font-bold text-white">
-                  {cartCount} Fresh Cans •{" "}
-                  <span className="text-emerald-400">${cartTotal}</span>
-                </p>
               </div>
+            )}
 
-              {packingStep === "complete" ? (
-                <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+            {/* STAGE 3: ORDER SUCCESS CARD (User requested screen in center) */}
+            {packingStep === "complete" && (
+              <div className="relative z-50 bg-neutral-900/95 backdrop-blur-2xl border border-white/20 rounded-3xl p-6 sm:p-8 max-w-md w-full text-center shadow-[0_30px_90px_rgba(0,0,0,0.6)] animate-in zoom-in-95 duration-500 mx-4">
+                <div className="w-16 h-16 rounded-full bg-emerald-500 text-black flex items-center justify-center text-3xl font-black shadow-xl mx-auto mb-4 animate-bounce">
+                  ✓
+                </div>
+                <span className="text-xs font-mono font-bold tracking-widest uppercase text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-3.5 py-1.5 rounded-full inline-block mb-2">
+                  Order Dispatched to Faisal Sikandar
+                </span>
+                <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight mb-2">
+                  Out for Chilled Delivery! 🚀
+                </h3>
+                <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed mb-6">
+                  The express truck has picked up your sealed juice box and departed for chilled delivery to{" "}
+                  <strong className="text-emerald-400 font-semibold">Faisal Sikandar</strong> (Ali Bootcamp).
+                </p>
+
+                {/* Total Packed Info */}
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-6 text-left">
+                  <div className="text-xs text-neutral-400 mb-1">Total Packed:</div>
+                  <div className="text-lg font-black text-white">
+                    {cartCount} Fresh Cans • <span className="text-emerald-400 font-mono">${cartTotal}</span>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row items-center gap-3">
                   <button
                     onClick={handleStartCheckout}
-                    className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white font-semibold text-xs py-2.5 sm:py-3 px-3.5 sm:px-4 rounded-xl transition-all cursor-pointer border border-white/20 active:scale-95"
+                    className="w-full sm:w-1/2 bg-white/10 hover:bg-white/20 text-white font-semibold text-xs py-3 px-4 rounded-xl border border-white/20 transition-all cursor-pointer active:scale-95 flex items-center justify-center gap-2"
                   >
                     <span>🔄 Replay</span>
                   </button>
@@ -1156,23 +1134,26 @@ function App() {
                       setToastMessage("🚚 Order successfully delivered to Faisal Sikandar!");
                       setTimeout(() => setToastMessage(""), 3500);
                     }}
-                    className="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs py-2.5 sm:py-3 px-5 sm:px-6 rounded-xl transition-all cursor-pointer shadow-lg active:scale-95 flex items-center justify-center gap-1.5"
+                    className="w-full sm:w-1/2 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs py-3 px-4 rounded-xl transition-all cursor-pointer shadow-lg active:scale-95 flex items-center justify-center gap-2"
                   >
                     <span>Finish & Close</span>
                     <BsArrowRight />
                   </button>
                 </div>
-              ) : (
-                <div className="flex items-center gap-2 text-xs text-neutral-400">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                  <span className="text-[11px] sm:text-xs">
-                    {(packingStep === "truck-arrive" || packingStep === "box-loading" || packingStep === "truck-exit")
-                      ? "Loading box into express truck..."
-                      : "Packing & sealing order..."}
-                  </span>
-                </div>
-              )}
-            </div>
+              </div>
+            )}
+          </div>
+
+          {/* Fullscreen Edge-to-Edge Highway Road across the Bottom of Website */}
+          <div className="relative w-full h-24 sm:h-32 bg-gradient-to-b from-[#252a35] via-[#1a1e27] to-[#101318] border-t-4 border-[#3b4252] shadow-[0_-15px_40px_rgba(0,0,0,0.6)] z-20 flex flex-col justify-between overflow-hidden">
+            {/* Top Shoulder White Line */}
+            <div className="w-full h-1 bg-white/35" />
+
+            {/* Moving / Glowing Yellow Center Dashed Divider Line */}
+            <div className="w-full h-2 bg-[repeating-linear-gradient(90deg,#f59e0b_0,#f59e0b_45px,transparent_45px,transparent_85px)] opacity-90 animate-road-line" />
+
+            {/* Bottom Curb Line */}
+            <div className="w-full h-1 bg-neutral-800" />
           </div>
         </div>
       )}
