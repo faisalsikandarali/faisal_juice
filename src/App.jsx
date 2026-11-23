@@ -23,12 +23,14 @@ import apples from "./assets/apples.png";
 import passion from "./assets/passion.png";
 import can from "./assets/can.png";
 import labels from "./assets/labels.png";
-import ahmedImg from "./assets/people/ahmed.jpg";
-import saraImg from "./assets/people/sara.jpg";
 import { TypewriterText, SlideUpWords, SlideIn } from "./components/AnimatedText";
 import CraftPurityShowcase from "./components/CraftPurityShowcase";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// Fast & Lightweight Unsplash CDN Avatars
+const ahmedImg = "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80";
+const saraImg = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80";
 
 // GSAP & Swiper
 gsap.registerPlugin(ScrollTrigger);
